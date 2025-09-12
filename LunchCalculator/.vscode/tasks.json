@@ -1,0 +1,10 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run LunchCalculator app",
+            "type": "shell",
+            "command": "QT_PLUGIN_PATH=/opt/qskinny/lib/qskinny/plugins/ ./build/lunchcalculator",
+            "problemMatcher": []
+        }
+    ]}

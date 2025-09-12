@@ -1,0 +1,11 @@
+This is a pseudocode on how to build a lunch calculator.
+
+Information
+1.Receipt
+- List of foods with price
+- SST charges
+
+2.People
+- Number of people
+- Name of each people
+

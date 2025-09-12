@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_lunchcalculator_FILE /home/edag/Desktop/Simple_Projects/LunchCalculator/build/lunchcalculator)
+set(__QT_DEPLOY_TARGET_lunchcalculator_TYPE EXECUTABLE)
