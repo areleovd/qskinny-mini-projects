@@ -8,6 +8,14 @@
 class ButtonsGridBox : public QskGridBox
 {
     public:
+        double firstOperand = 0;
+        bool addMode = false;
+        bool minusMode = false;
+        bool multiplyMode = false;
+        bool divideMode = false;
+        int braceCount = 0;
+    
+    public:
         ButtonsGridBox(QQuickItem* parent, DisplayLabel* label);
 };
 

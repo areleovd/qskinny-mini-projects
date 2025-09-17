@@ -43,6 +43,7 @@ int main( int argc, char* argv[] )
     auto outerBox = new QskLinearBox( Qt::Vertical );
     outerBox->setPanel( true );
     auto* displayLabel = new DisplayLabel("0", outerBox);
+
     
     /* Button box  of the calculator*/
     auto buttonsGridBox = new ButtonsGridBox(outerBox, displayLabel);
