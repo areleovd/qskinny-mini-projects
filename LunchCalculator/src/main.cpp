@@ -42,6 +42,7 @@ int main( int argc, char* argv[] )
     /* Outer box of the calculator*/
     auto outerBox = new QskLinearBox( Qt::Vertical );
     outerBox->setPanel( true );
+    outerBox->setBackgroundColor(QColor("#3b3b3b"));
     auto* displayLabel = new DisplayLabel("0", outerBox);
 
     

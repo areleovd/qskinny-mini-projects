@@ -5,9 +5,11 @@
 
 class DisplayLabel : public QskTextLabel
 {
-        Q_OBJECT
-public:
-    DisplayLabel(const QString& text, QQuickItem* parent = nullptr);
+        // Q_OBJECT
+    public:
+        QSK_SUBCONTROLS(Panel, Text)
+
+        DisplayLabel(const QString& text, QQuickItem* parent = nullptr);
 };
 
 
