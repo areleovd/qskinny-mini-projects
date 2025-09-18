@@ -16,7 +16,7 @@ find_package(QSkinny REQUIRED)
  
 add_executable(lunchcalculator
     src/main.cpp
-    src/CalculatorButtonSkinFactory.cpp
+    src/CalculatorSkinFactory.cpp
     src/DisplayLabel.cpp
     src/NumberButtons.cpp
     src/OperationButtons.cpp

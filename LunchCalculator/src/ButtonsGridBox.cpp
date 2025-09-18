@@ -12,7 +12,6 @@
 ButtonsGridBox::ButtonsGridBox(QQuickItem* parent, DisplayLabel* label) : QskGridBox(parent)
 {
 
-    // auto* this = new QskGridBox(parent);
     this->setPanel(true);
     this->setSpacing(5);
     for (int  i = 0; i <=3 ; i++)
@@ -56,17 +55,14 @@ ButtonsGridBox::ButtonsGridBox(QQuickItem* parent, DisplayLabel* label) : QskGri
                 if (current == "0")
                 {
                     label->setText("(");
-                    // braceCount = 1;
                 }
                 else if ((current != "0") &&  (current.contains("(") == 0))
                 {
                     label->setText("(" + current);
-                    // braceCount = 1;
                 }
                 else 
                 {
                     label->setText(current + ")");
-                    // braceCount = 0;
                 }
                  
             });
@@ -334,7 +330,7 @@ ButtonsGridBox::ButtonsGridBox(QQuickItem* parent, DisplayLabel* label) : QskGri
                 }
                 else if (current.contains(".") == 1)
                 {
-                    
+
                 }
 
             });

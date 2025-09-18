@@ -1,4 +1,4 @@
-#include "CalculatorButtonSkinFactory.h"
+#include "CalculatorSkinFactory.h"
 #include <QskAspect.h>
 #include <QskPushButton.h>
 #include <QskSkin.h>
@@ -12,21 +12,21 @@
 #include <QskFontRole.h>
 #include "DisplayLabel.h"
 
-CalculatorButtonSkinFactory::CalculatorButtonSkinFactory(QObject* parent) : QskSkinFactory(parent)
+CalculatorSkinFactory::CalculatorSkinFactory(QObject* parent) : QskSkinFactory(parent)
 {
 
 }
 
-QStringList CalculatorButtonSkinFactory::skinNames() const
+QStringList CalculatorSkinFactory::skinNames() const
 {
-        return{"GeneralButtonSkin"};
+        return{"PastelSkin"};
 }
 
-QskSkin* CalculatorButtonSkinFactory::createSkin(const QString& skinName) 
+QskSkin* CalculatorSkinFactory::createSkin(const QString& skinName) 
 {
-    if(skinName == "GeneralButtonSkin")
+    if(skinName == "PastelSkin")
     {
-        class GeneralButtonSkin : public QskSkin
+        class PastelSkin : public QskSkin
         {
             
             protected:
@@ -74,15 +74,10 @@ QskSkin* CalculatorButtonSkinFactory::createSkin(const QString& skinName)
                         e.setPadding(DisplayLabel::Panel, QskMargins(25));
                         // e.setBoxBorderMetrics(DisplayLabel::Panel, 8);
                         
-
-
-
-
-
                     }
                 }
         };
-    return new GeneralButtonSkin();
+    return new PastelSkin();
     }
 
     return nullptr;

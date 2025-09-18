@@ -1,5 +1,5 @@
-#ifndef CALCULATORBUTTONSKINFACTORY_H
-#define CALCULATORBUTTONSKINFACTORY_H
+#ifndef CALCULATORSKINFACTORY_H
+#define CALCULATORSKINFACTORY_H
 #include <QskSkin.h>
 
 #include <QskGradient.h>
@@ -12,12 +12,12 @@
 #include <QskMargins.h>
 
 
-class CalculatorButtonSkinFactory : public QskSkinFactory
+class CalculatorSkinFactory : public QskSkinFactory
 {
     Q_OBJECT
     
 public:
-    CalculatorButtonSkinFactory(QObject* parent = nullptr);
+    CalculatorSkinFactory(QObject* parent = nullptr);
     
     QStringList skinNames() const override;
 
@@ -25,4 +25,4 @@ public:
 
 };
 
-#endif
+#endif //CALCULATORSKINFACTORY_H

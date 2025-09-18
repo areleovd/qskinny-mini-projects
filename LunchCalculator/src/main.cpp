@@ -27,7 +27,7 @@ Date created: 25 August 2025
 /*
     My Class Implementation
 */
-#include "CalculatorButtonSkinFactory.h"
+#include "CalculatorSkinFactory.h"
 #include "DisplayLabel.h"
 #include "ButtonsGridBox.h"
 
@@ -35,17 +35,17 @@ Date created: 25 August 2025
 int main( int argc, char* argv[] )
 {
     QGuiApplication app( argc, argv );
-    qskSkinManager->registerFactory("CalculatorButtonSkinFactory", new CalculatorButtonSkinFactory());
-    qskSkinManager->setSkin("GeneralButtonSkin");
+    qskSkinManager->registerFactory("CalculatorSkinFactory", new CalculatorSkinFactory());
+    qskSkinManager->setSkin("PastelSkin");
     
     
     /* Outer box of the calculator*/
     auto outerBox = new QskLinearBox( Qt::Vertical );
     outerBox->setPanel( true );
     outerBox->setBackgroundColor(QColor("#3b3b3b"));
+
     auto* displayLabel = new DisplayLabel("0", outerBox);
 
-    
     /* Button box  of the calculator*/
     auto buttonsGridBox = new ButtonsGridBox(outerBox, displayLabel);
         

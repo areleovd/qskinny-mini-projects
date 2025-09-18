@@ -13,7 +13,6 @@ class ButtonsGridBox : public QskGridBox
         bool minusMode = false;
         bool multiplyMode = false;
         bool divideMode = false;
-        int braceCount = 0;
     
     public:
         ButtonsGridBox(QQuickItem* parent, DisplayLabel* label);
