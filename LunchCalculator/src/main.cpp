@@ -44,6 +44,7 @@ int main( int argc, char* argv[] )
     outerBox->setPanel( true );
     outerBox->setBackgroundColor(QColor("#3b3b3b"));
 
+    /* Main display of the calculator */
     auto* displayLabel = new DisplayLabel("0", outerBox);
 
     /* Button box  of the calculator*/

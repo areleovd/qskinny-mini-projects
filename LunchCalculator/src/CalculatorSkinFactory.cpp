@@ -38,42 +38,48 @@ QskSkin* CalculatorSkinFactory::createSkin(const QString& skinName)
                         //This sets the whole system font to the following settings
                         setFont(QskFontRole::Body, QFont("Calibri", 14, QFont::Bold));
 
+                        //For DisplayLabel
+                        using Display = DisplayLabel;
+                        {
+                            e.setColor(Display::Text, QColor("#004d40"));
+                            e.setColor(Display::Panel, QColor("#b2dfdb"));
+                            e.setMetric(Display::Panel | QskAspect::Border, 2);
+                            e.setColor(Display::Panel | QskAspect::Border, Qt::black);
+                            e.setAlignment(Display::Text, Qt::AlignRight);
+                            e.setBoxShape(Display::Panel, 8);
+                            e.setPadding(Display::Panel, QskMargins(25));
+                        }   
+
                         //For OtherButtons
-                        // e.setFontRole(OtherButtons::Text, {QskFontRole::Body, QskFontRole::High});
-                        e.setGradient(OtherButtons::Panel, QColor("#add8e6"));  
-                        e.setColor(OtherButtons::Text, Qt::black);
-                        e.setGradient(OtherButtons::Panel | OtherButtons::Hovered, QColor("#579abe"));
-                        e.setAnimation(OtherButtons::Panel | QskAspect::Color, 100);
-                        e.setBoxShape(OtherButtons::Panel, 8);
-                       // e.setMargin(OtherButtons::Panel, myMargin->isEquidistant());
+                        using Other = OtherButtons;
+                        {
+                            e.setGradient(Other::Panel, QColor("#add8e6"));  
+                            e.setColor(Other::Text, Qt::black);
+                            e.setGradient(Other::Panel | Other::Hovered, QColor("#579abe"));
+                            e.setAnimation(Other::Panel | QskAspect::Color, 100);
+                            e.setBoxShape(Other::Panel, 8);
+                        }
 
                         //For NumberButtons
-                        e.setGradient(NumberButtons::Panel, QColor("#b2e4b2")); 
-                        e.setColor(NumberButtons::Text, Qt::black);
-                        e.setGradient(NumberButtons::Panel | NumberButtons::Hovered, QColor("#03c03c"));
-                        e.setAnimation(NumberButtons::Panel | QskAspect::Color, 100);
-                        e.setBoxShape(NumberButtons::Panel, 8);
-                        //e.setMargin(NumberButtons::Panel, myMargin->isEquidistant());
-                        
-                        //For OperationButtons
-                        e.setGradient(OperationButtons::Panel, QColor("#e0b0b0")); 
-                        e.setColor(OperationButtons::Text, Qt::black);
-                        e.setGradient(OperationButtons::Panel | OperationButtons::Hovered, QColor("#c23b23"));
-                        e.setAnimation(OperationButtons::Panel | QskAspect::Color, 100);
-                        e.setBoxShape(OperationButtons::Panel, 8);
-                        // e.setMargin(OperationButtons::Panel, myMargin->isEquidistant());
+                        using Number = NumberButtons;
+                        {
+                            e.setGradient(Number::Panel, QColor("#b2e4b2")); 
+                            e.setColor(Number::Text, Qt::black);
+                            e.setGradient(Number::Panel | Number::Hovered, QColor("#03c03c"));
+                            e.setAnimation(Number::Panel | QskAspect::Color, 100);
+                            e.setBoxShape(Number::Panel, 8);
+                        }
 
-                        //For DisplayLabel
-                        e.setColor(DisplayLabel::Text, QColor("#004d40"));
-                        e.setColor(DisplayLabel::Panel, QColor("#b2dfdb"));
-                        e.setMetric(DisplayLabel::Panel | QskAspect::Border, 2);
-                        e.setColor(DisplayLabel::Panel | QskAspect::Border, Qt::black);
-                        e.setAlignment(DisplayLabel::Text, Qt::AlignRight);
-                        // e.setMargin(DisplayLabel::Panel, QskMargins(15));
-                        e.setBoxShape(DisplayLabel::Panel, 8);
-                        e.setPadding(DisplayLabel::Panel, QskMargins(25));
-                        // e.setBoxBorderMetrics(DisplayLabel::Panel, 8);
-                        
+                        //For OperationButtons
+                        using Operation = OperationButtons;
+                        {
+                            e.setGradient(Operation::Panel, QColor("#e0b0b0")); 
+                            e.setColor(Operation::Text, Qt::black);
+                            e.setGradient(Operation::Panel | Operation::Hovered, QColor("#c23b23"));
+                            e.setAnimation(Operation::Panel | QskAspect::Color, 100);
+                            e.setBoxShape(OperationButtons::Panel, 8);
+                        }
+
                     }
                 }
         };
