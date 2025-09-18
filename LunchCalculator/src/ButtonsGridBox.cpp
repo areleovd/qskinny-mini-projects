@@ -14,7 +14,7 @@ ButtonsGridBox::ButtonsGridBox(QQuickItem* parent, DisplayLabel* label) : QskGri
 
     // auto* this = new QskGridBox(parent);
     this->setPanel(true);
-    this->setSpacing(4);
+    this->setSpacing(5);
     for (int  i = 0; i <=3 ; i++)
     {
         this->addColumnSpacer(50, i);
@@ -22,12 +22,12 @@ ButtonsGridBox::ButtonsGridBox(QQuickItem* parent, DisplayLabel* label) : QskGri
 
     //First row
     auto* otherACButton = new OtherButtons("AC");
-    auto* otherBraceButton = new OtherButtons("()");
+    auto* otherBraceButton = new OtherButtons("()"); //Not use for now
     auto* otherPercentButton = new OtherButtons("%");
     auto* operationDivideButton = new OperationButtons("/");
 
-    this->addItem(otherACButton, 0,0);
-    this->addItem(otherBraceButton, 0,1);
+    this->addItem(otherACButton, 0,0, 1,2);
+    // this->addItem(otherBraceButton, 0,1); //wiill be uncommented once we figured out how to consider braces in the calculation
     this->addItem(otherPercentButton, 0,2);
     this->addItem(operationDivideButton, 0,3);
     
@@ -51,22 +51,22 @@ ButtonsGridBox::ButtonsGridBox(QQuickItem* parent, DisplayLabel* label) : QskGri
         {
             QObject::connect(otherBraceButton, &QskPushButton::clicked, [label, this]()
             {
-                //TODO: Improve the usage of ()
+                //TODO: Improve the usage of (). Consider the operator priority when () is used
                 QString current = label->text();
                 if (current == "0")
                 {
                     label->setText("(");
-                    braceCount = 1;
+                    // braceCount = 1;
                 }
-                else if (current != "0" &&  braceCount == 0)
+                else if ((current != "0") &&  (current.contains("(") == 0))
                 {
                     label->setText("(" + current);
-                    braceCount = 1;
+                    // braceCount = 1;
                 }
-                else if (current != "0" &&   braceCount == 1)
+                else 
                 {
                     label->setText(current + ")");
-                    braceCount = 0;
+                    // braceCount = 0;
                 }
                  
             });
@@ -323,7 +323,20 @@ ButtonsGridBox::ButtonsGridBox(QQuickItem* parent, DisplayLabel* label) : QskGri
         {
             QObject::connect(otherDecimalButton,&QskPushButton::clicked, [label, this]()
             {
-                label->setText(label->text() + ".");
+                QString current = label->text();
+                if  (current == "0" && current.contains(".") == 0)
+                {
+                    label->setText(current + ".");
+                }
+                else if (current != "0" && current.contains(".") == 0)
+                {
+                    label->setText(current + ".");
+                }
+                else if (current.contains(".") == 1)
+                {
+                    
+                }
+
             });
         }
         else  if (fifthText == "=")
