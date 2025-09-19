@@ -3,6 +3,7 @@
 #include <QskGridBox.h>
 #include <QskPushButton.h>
 #include <QskTextLabel.h>
+#include <qguiapplication_platform.h>
 
 #include "DisplayLabel.h"
 #include "NumberButtons.h"
@@ -19,358 +20,331 @@ ButtonsGridBox::ButtonsGridBox(QQuickItem* parent, DisplayLabel* label) : QskGri
         this->addColumnSpacer(50, i);
     }
 
-    //First row
-    auto* otherACButton = new OtherButtons("AC");
-    auto* otherBraceButton = new OtherButtons("()"); //Not use for now
-    auto* otherPercentButton = new OtherButtons("%");
-    auto* operationDivideButton = new OperationButtons("/");
+    setupFirstRowButtons(label);
+    setupSecondRowButtons(label);
+    setupThirdRowButtons(label);
+    setupFourthRowButtons(label);
+    setupFifthRowButtons(label);
+}
 
-    this->addItem(otherACButton, 0,0, 1,2);
-    // this->addItem(otherBraceButton, 0,1); //wiill be uncommented once we figured out how to consider braces in the calculation
-    this->addItem(otherPercentButton, 0,2);
-    this->addItem(operationDivideButton, 0,3);
-    
-    QStringList firstRowText = {otherACButton->text(), otherBraceButton->text(), otherPercentButton->text(), operationDivideButton->text()};
+void ButtonsGridBox::setupFirstRowButtons(DisplayLabel* label)
+{
+        //First row;
+    QStringList firstRowText = {"AC", "()", "%", "/"};
     for (auto &frText : firstRowText)
     {
-        if (frText == "AC")
+        if (frText != "/")
         {
-            QObject::connect(otherACButton, &QskPushButton::clicked, [label, this]()
+            auto *otherButton = new OtherButtons(frText);
+            if (otherButton->text() == "AC")
             {
+                this->addItem(otherButton, 0,0, 1,2);
+                QObject::connect(otherButton, &QskPushButton::clicked, [label, this]()
+                {
+                    label->setText("0");
+                    m_firstOperand = 0;
+                    m_addMode = false;
+                    m_minusMode = false;
+                    m_multiplyMode = false;
+                    m_divideMode = false;
+                    m_operationPerformed = false;
+                            
+                });
+            }
+            else if (otherButton->text() == "()")
+            {
+                // this->addItem(otherButton, 0,1); //wiill be uncommented once we figured out how to consider braces in the calculation
+                QObject::connect(otherButton, &QskPushButton::clicked, [label, this]()
+                {
+                    //TODO: Improve the usage of (). Consider the operator priority when () is used
+                    QString current = label->text();
+                    if (current == "0")
+                    {
+                        label->setText("(");
+                    }
+                    else if ((current != "0") &&  (current.contains("(") == 0))
+                    {
+                        label->setText("(" + current);
+                    }
+                    else 
+                    {
+                        label->setText(current + ")");
+                    }
+                    
+                });
+            }
+            else
+            {
+                this->addItem(otherButton, 0,2);
+                QObject::connect(otherButton, &QskPushButton::clicked, [label, this]()
+                {
+                    QString current = label->text();
+                    if (current != "0")
+                    {
+                        m_firstOperand = (current.toDouble())/100;
+                        label->setText(QString::number(m_firstOperand));
+                    }
+                });             
+            }
+        }
+        else 
+        {
+            auto *operationButton = new OperationButtons(frText);
+            this->addItem(operationButton,0,3);
+            QObject::connect(operationButton, &QskPushButton::clicked,  [label, this]()
+            {
+                m_firstOperand = label->text().toDouble();
                 label->setText("0");
-                firstOperand = 0;
-                addMode = false;
-                minusMode = false;
-                multiplyMode = false;
-                divideMode = false;
-                        
-            });
-        }
-        else if (frText == "()")
-        {
-            QObject::connect(otherBraceButton, &QskPushButton::clicked, [label, this]()
-            {
-                //TODO: Improve the usage of (). Consider the operator priority when () is used
-                QString current = label->text();
-                if (current == "0")
-                {
-                    label->setText("(");
-                }
-                else if ((current != "0") &&  (current.contains("(") == 0))
-                {
-                    label->setText("(" + current);
-                }
-                else 
-                {
-                    label->setText(current + ")");
-                }
-                 
-            });
-        }
-        else if (frText == "%")
-        {
-            QObject::connect(otherPercentButton, &QskPushButton::clicked, [label, this]()
-            {
-                firstOperand = (label->text().toDouble())/100;
-            });
-        }
-        else if (frText == "/")
-        {
-            QObject::connect(operationDivideButton, &QskPushButton::clicked,  [label, this]()
-            {
-                firstOperand = label->text().toDouble();
-                label->setText("0");
-                divideMode = true;
+                m_divideMode = true;
             });
         }
     }
+}
 
-
-    //Second row
-    auto* numberSevenButton = new NumberButtons("7");
-    auto* numberEightButton = new NumberButtons("8");
-    auto* numberNineButton = new NumberButtons("9");
-    auto* operationMultiplyButton = new OperationButtons("X");
-    
-    this->addItem(numberSevenButton, 1,0);
-    this->addItem(numberEightButton, 1,1);
-    this->addItem(numberNineButton, 1,2);
-    this->addItem(operationMultiplyButton, 1, 3);
-
-    QStringList secondRowText = {numberSevenButton->text(), numberEightButton->text(), numberNineButton->text(), operationMultiplyButton->text()};
+void ButtonsGridBox::setupSecondRowButtons(DisplayLabel* label)
+{
+   //Second row
+    QStringList secondRowText = {"7", "8", "9", "X"};
     for (auto &srText : secondRowText)
     {
-        if (srText == "7")
-        {
-            QObject::connect(numberSevenButton, &QskPushButton::clicked, [label, numberSevenButton]()
-            { 
-                QString current = label->text();
-                if (current == "0")
-                    label->setText(numberSevenButton->text());
-                else
-                    label->setText(current + numberSevenButton->text());
-            
-            });
-        }
-        else  if (srText == "8")
-        {
-            QObject::connect(numberEightButton, &QskPushButton::clicked, [label, numberEightButton]()
-            { 
-                QString current = label->text();
-                if (current == "0")
-                    label->setText(numberEightButton->text());
-                else
-                    label->setText(current + numberEightButton->text());
-            
-            });
-        }
-        else  if (srText == "9")
-        {
-            QObject::connect(numberNineButton, &QskPushButton::clicked, [label, numberNineButton]()
-            { 
-                QString current = label->text();
-                if (current == "0")
-                    label->setText(numberNineButton->text());
-                else
-                    label->setText(current + numberNineButton->text());
-            
-            });
-        }
-        else if (srText == "X")
-        {
-            QObject::connect(operationMultiplyButton, &QskPushButton::clicked,  [label, this]()
+            if (srText != "X")
             {
-                firstOperand = label->text().toDouble();
-                label->setText("0");
-                multiplyMode = true;
-            });
-        }
-
+                auto* srNumberButton = new NumberButtons(srText);
+                if (srText == "7")
+                    this->addItem(srNumberButton, 1, 0);
+                else if (srText == "8")
+                    this->addItem(srNumberButton, 1, 1);
+                else
+                    this->addItem(srNumberButton, 1, 2);
+                QObject::connect(srNumberButton, &QskPushButton::clicked, [label, srNumberButton, this]()
+                { 
+                    QString current = label->text();
+                    if (current == "0")
+                    {
+                        label->setText(srNumberButton->text());
+                    }
+                    else if (current != "0" && m_operationPerformed == true)
+                    {
+                        label->setText(srNumberButton->text());
+                        m_operationPerformed = false;
+                    }
+                    else
+                    {
+                        label->setText(current + srNumberButton->text());
+                    }
+                });
+            }
+            else 
+            {
+                auto *operationButton = new OperationButtons (srText);
+                this->addItem(operationButton, 1, 3);
+                QObject::connect(operationButton, &QskPushButton::clicked,  [label, this]()
+                {
+                    m_firstOperand = label->text().toDouble();
+                    label->setText("0");
+                    m_multiplyMode = true;
+                });
+            }
     }
+}
 
+void ButtonsGridBox::setupThirdRowButtons(DisplayLabel* label)
+{
     //Third row
-    auto* numberFourButton = new NumberButtons("4");
-    auto* numberFiveButton = new NumberButtons("5");
-    auto* numberSixButton = new NumberButtons("6");
-    auto* operationMinusButton = new OperationButtons("-");
-
-    this->addItem(numberFourButton, 2,0);
-    this->addItem(numberFiveButton, 2, 1);
-    this->addItem(numberSixButton, 2, 2);
-    this->addItem(operationMinusButton, 2,3);
-
-    QStringList thirdRowText = {numberFourButton->text(), numberFiveButton->text(), numberSixButton->text(), operationMinusButton->text()};
+    QStringList thirdRowText = {"4", "5", "6", "-"};
     for (auto &trText : thirdRowText)
     {
-        if (trText == "4")
+        if (trText != "-")
         {
-            QObject::connect(numberFourButton, &QskPushButton::clicked, [label, numberFourButton]()
+            auto* trNumberButton = new NumberButtons(trText);
+            if (trText == "4")
+                this->addItem(trNumberButton, 2, 0);
+            else if (trText == "5")
+                this->addItem(trNumberButton, 2, 1);
+            else
+                this->addItem(trNumberButton, 2, 2);
+            QObject::connect(trNumberButton, &QskPushButton::clicked, [label, trNumberButton, this]()
             { 
                 QString current = label->text();
                 if (current == "0")
-                    label->setText(numberFourButton->text());
+                {
+                    label->setText(trNumberButton->text());
+                }
+                else if (current != "0" && m_operationPerformed == true)
+                {
+                    label->setText(trNumberButton->text());
+                    m_operationPerformed = false;
+                }
                 else
-                    label->setText(current + numberFourButton->text());
-            
+                {
+                    label->setText(current + trNumberButton->text());
+                }
             });
         }
-        else  if (trText == "5")
+        else 
         {
-            QObject::connect(numberFiveButton, &QskPushButton::clicked, [label, numberFiveButton]()
-            { 
-                QString current = label->text();
-                if (current == "0")
-                    label->setText(numberFiveButton->text());
-                else
-                    label->setText(current + numberFiveButton->text());
-            
-            });
-        }
-        else  if (trText == "6")
-        {
-            QObject::connect(numberSixButton, &QskPushButton::clicked, [label, numberSixButton]()
-            { 
-                QString current = label->text();
-                if (current == "0")
-                    label->setText(numberSixButton->text());
-                else
-                    label->setText(current + numberSixButton->text());
-            
-            });
-        }
-        else  if (trText == "-")
-        {
-            QObject::connect(operationMinusButton, &QskPushButton::clicked,  [label, this]()
+            auto *operationButton = new OperationButtons (trText);
+            this->addItem(operationButton, 2, 3);
+            QObject::connect(operationButton, &QskPushButton::clicked,  [label, this]()
             {
-                firstOperand = label->text().toDouble();
+                m_firstOperand = label->text().toDouble();
                 label->setText("0");
-                minusMode = true;
+                m_minusMode = true;
             });
-        }        
-    }
+        }
+             
+    }    
+}
 
+void ButtonsGridBox::setupFourthRowButtons(DisplayLabel* label)
+{
     //Fourth row
-    auto* numberOneButton = new NumberButtons("1");
-    auto* numberTwoButton = new NumberButtons("2");
-    auto* numberThreeButton = new NumberButtons("3");
-    auto* operationPlusButton = new OperationButtons("+");
-
-    this->addItem(numberOneButton, 3, 0);
-    this->addItem(numberTwoButton, 3,1);
-    this->addItem(numberThreeButton, 3,2);
-    this->addItem(operationPlusButton, 3,3);
-
-    QStringList fourthRowText = {numberOneButton->text(), numberTwoButton->text(), numberThreeButton->text(), operationPlusButton->text()};
+    QStringList fourthRowText = {"1", "2", "3", "+"};
     for (auto &fourText : fourthRowText)
     {
-        if (fourText == "1")
+        
+        if (fourText != "+")
         {
-            QObject::connect(numberOneButton, &QskPushButton::clicked, [label, numberOneButton]()
+            auto* fourthRowNumberButton = new NumberButtons(fourText);
+            if (fourText == "1")
+                this->addItem(fourthRowNumberButton, 3, 0);
+            else if (fourText == "2")
+                this->addItem(fourthRowNumberButton, 3, 1);
+            else
+                this->addItem(fourthRowNumberButton, 3, 2);
+            QObject::connect(fourthRowNumberButton, &QskPushButton::clicked, [label, fourthRowNumberButton, this]()
             { 
                 QString current = label->text();
                 if (current == "0")
-                    label->setText(numberOneButton->text());
+                {
+                    label->setText(fourthRowNumberButton->text());
+                }
+                else if (current != "0" && m_operationPerformed == true)
+                {
+                    label->setText(fourthRowNumberButton->text());
+                    m_operationPerformed = false;
+                }
                 else
-                    label->setText(current + numberOneButton->text());
-            
+                {
+                    label->setText(current + fourthRowNumberButton->text());
+                }
             });
         }
-        else  if (fourText == "2")
+        else 
         {
-            QObject::connect(numberTwoButton, &QskPushButton::clicked, [label, numberTwoButton]()
-            { 
-                QString current = label->text();
-                if (current == "0")
-                    label->setText(numberTwoButton->text());
-                else
-                    label->setText(current + numberTwoButton->text());
-            
-            });
-        }
-        else  if (fourText == "3")
-        {
-            QObject::connect(numberThreeButton, &QskPushButton::clicked, [label, numberThreeButton]()
-            { 
-                QString current = label->text();
-                if (current == "0")
-                    label->setText(numberThreeButton->text());
-                else
-                    label->setText(current + numberThreeButton->text());
-            
-            });
-        }
-        else  if (fourText == "+")
-        {
-            QObject::connect(operationPlusButton, &QskPushButton::clicked,  [label, this]()
+            auto *operationButton = new OperationButtons (fourText);
+            this->addItem(operationButton, 3, 3);
+            QObject::connect(operationButton, &QskPushButton::clicked,  [label, this]()
             {
-                firstOperand = label->text().toDouble();
+                m_firstOperand = label->text().toDouble();
                 label->setText("0");
-                addMode = true;
+                m_addMode = true;
             });
-        }        
-    }    
+        }
+               
+    }       
+}
 
+void ButtonsGridBox::setupFifthRowButtons(DisplayLabel* label)
+{
     //Fifth row
-    auto* otherPosNegButton = new OtherButtons("+/-");
-    auto* numberZeroButton = new NumberButtons("0");
-    auto* otherDecimalButton = new OtherButtons(".");
-    auto* operationEqualButton = new OperationButtons("=");
-
-    this->addItem(otherPosNegButton, 4, 0);
-    this->addItem(numberZeroButton, 4,1);
-    this->addItem(otherDecimalButton, 4, 2);
-    this->addItem(operationEqualButton, 4, 3);
-
-    QStringList fifthRowText = {otherPosNegButton->text(), numberZeroButton->text(), otherDecimalButton->text(), operationEqualButton->text()};
+    QStringList fifthRowText = {"+/-", "0", ".", "="};
     for (auto &fifthText : fifthRowText)
     {
-        if (fifthText == "+/-")
+        if (fifthText == "0")
         {
-            QObject::connect(otherPosNegButton, &QskPushButton::clicked, [label, this]()
-            {
-                QString current = label->text();
-                if (current == "0")
-                {
-                    //Do nothing I guess?
-                }
-                else
-                {
-                    double currentState  = current.toDouble();
-                    firstOperand = currentState  *  (-1);
-                    label->setText(QString::number(firstOperand));
-
-                }
-
-            });
-        }
-        else  if (fifthText == "0")
-        {
-            QObject::connect(numberZeroButton, &QskPushButton::clicked, [label, numberZeroButton]()
+            auto* fifthRowNumberButton = new NumberButtons(fifthText);
+            this->addItem(fifthRowNumberButton, 4, 1);
+            QObject::connect(fifthRowNumberButton, &QskPushButton::clicked, [label, fifthRowNumberButton, this]()
             { 
                 QString current = label->text();
                 if (current == "0")
-                    label->setText(numberZeroButton->text());
+                {
+                    label->setText(fifthRowNumberButton->text());
+                }
+                else if (current != "0" && m_operationPerformed == true)
+                {
+                    label->setText(fifthRowNumberButton->text());
+                    m_operationPerformed = false;
+                }
                 else
-                    label->setText(current + numberZeroButton->text());
-            
+                {
+                    label->setText(current + fifthRowNumberButton->text());
+                }
             });
         }
-        else  if (fifthText == ".")
+        else if (fifthText == "=")
         {
-            QObject::connect(otherDecimalButton,&QskPushButton::clicked, [label, this]()
-            {
-                QString current = label->text();
-                if  (current == "0" && current.contains(".") == 0)
-                {
-                    label->setText(current + ".");
-                }
-                else if (current != "0" && current.contains(".") == 0)
-                {
-                    label->setText(current + ".");
-                }
-                else if (current.contains(".") == 1)
-                {
-
-                }
-
-            });
-        }
-        else  if (fifthText == "=")
-        {
-            QObject::connect(operationEqualButton, &QskPushButton::clicked, [label, this]()
+            auto *operationButton = new OperationButtons(fifthText);
+            this->addItem(operationButton, 4,3);
+            QObject::connect(operationButton, &QskPushButton::clicked, [label, this]()
             {
                 double secondOperand = label->text().toDouble();
                 double result = 0;
-                if (addMode)
+                if (m_addMode)
                 { 
-                    result = firstOperand + secondOperand;
-                    addMode = false;
+                    result = m_firstOperand + secondOperand;
+                    m_addMode = false;
 
                 }
-                else if (minusMode)
+                else if (m_minusMode)
                 {
-                    result = firstOperand - secondOperand;
-                    minusMode = false;
+                    result = m_firstOperand - secondOperand;
+                    m_minusMode = false;
                 }
-                else if (divideMode)
+                else if (m_divideMode)
                 {
                     //TODO: error handling when division by 0
-                    result = firstOperand / secondOperand;
-                    divideMode = false;
+                    result = m_firstOperand / secondOperand;
+                    m_divideMode = false;
                 }
-                else if (multiplyMode)
+                else if (m_multiplyMode)
                 {
-                    result = firstOperand * secondOperand;
-                    multiplyMode = false;
-                }
-                else 
-                {
-                    result = firstOperand;
+                    result = m_firstOperand * secondOperand;
+                    m_multiplyMode = false;
                 }
                 label->setText(QString::number(result));
-                firstOperand = 0;
+                m_firstOperand = 0;
+                m_operationPerformed = true;
 
-            });
-        }        
+            });         
+        }
+        else 
+        {
+            auto* otherButton = new OtherButtons(fifthText);
+            if (otherButton->text() == "+/-")
+            {
+                this->addItem(otherButton, 4, 0);
+                QObject::connect(otherButton, &QskPushButton::clicked, [label, this]()
+                {
+                    QString current = label->text();
+                    if (current != "0")
+                    {
+                        double currentState  = current.toDouble();
+                        m_firstOperand = currentState  *  (-1);
+                        label->setText(QString::number(m_firstOperand));
+                    }
+                });
+
+            }
+            else 
+            {
+                this->addItem(otherButton, 4, 2);
+                QObject::connect(otherButton,&QskPushButton::clicked, [label, this]()
+                {
+                    QString current = label->text();
+                    if  (current == "0" && current.contains(".") == 0)
+                    {
+                        label->setText(current + ".");
+                    }
+                    else if (current != "0" && current.contains(".") == 0)
+                    {
+                        label->setText(current + ".");
+                    }
+
+                });                
+            }
+        }
+              
     } 
-}
+}    
