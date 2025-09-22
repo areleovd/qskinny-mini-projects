@@ -15,7 +15,9 @@ find_package(Qt6 REQUIRED COMPONENTS Quick)
 find_package(QSkinny REQUIRED)
  
 add_executable(reallunchcalculator
-    src/main.cpp)
+    src/main.cpp
+    src/TopSectionBox.cpp
+    src/BottomSectionBox.cpp)
  
 target_link_libraries(reallunchcalculator PRIVATE
     Qt6::Quick

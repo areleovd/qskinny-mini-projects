@@ -123,6 +123,11 @@
         <mxCell id="BAqOKO4iMmSmiDQDoHme-30" value="Remove Person" style="rounded=0;whiteSpace=wrap;html=1;" parent="BAqOKO4iMmSmiDQDoHme-31" vertex="1">
           <mxGeometry x="130" width="120" height="40" as="geometry" />
         </mxCell>
+        <mxCell id="5l8_1tcMdIhnkX-cnTbR-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="BAqOKO4iMmSmiDQDoHme-36" source="BAqOKO4iMmSmiDQDoHme-21">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="740" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="5l8_1tcMdIhnkX-cnTbR-2" value="verticalContainerBox" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="375" y="-2" width="130" height="30" as="geometry" />
         </mxCell>
@@ -161,6 +166,9 @@
         </mxCell>
         <mxCell id="5l8_1tcMdIhnkX-cnTbR-18" value="horizontaButtonslBox" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="-90" y="458" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5l8_1tcMdIhnkX-cnTbR-20" value="tableGridBox??" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="880" y="350" width="110" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
