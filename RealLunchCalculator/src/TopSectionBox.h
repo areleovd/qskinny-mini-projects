@@ -5,7 +5,7 @@
 class TopSectionBox : public QskLinearBox
 {
     public:
-        TopSectionBox(QQuickItem* parent = nullptr );
+        TopSectionBox();
 };
 
 #endif //TOPSECTIONBOX_H
