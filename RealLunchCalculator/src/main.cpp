@@ -21,7 +21,7 @@ int main( int argc, char* argv[] )
     QGuiApplication app( argc, argv );
  
     QskWindow window;
-    //TODO
+    window.setTitle("Mim's Lunch Calculator");
     window.addItem(new MainView());
     window.resize(1280,800);
     window.show();
