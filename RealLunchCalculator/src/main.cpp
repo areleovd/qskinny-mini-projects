@@ -1,4 +1,3 @@
-#include "TopSectionBox.h"
 #include <QskScrollView.h>
 #include <QskWindow.h>
 #include <QskLinearBox.h>
